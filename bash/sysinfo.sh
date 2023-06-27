@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#Lab-1
 echo 'FQDN:'
 hostname -f
 
