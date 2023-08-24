@@ -1,8 +1,8 @@
-#!/bin/bash
+!/bin/bash
 
-##################################################################################################
+######-------------ROOT PRIVILAGE MESSAGE------------------########
 
-#if the script we run has root privilage and if not, exit.
+#if the script we run has root privilage it will run otherwise it will exit.
 if  [ "$(id -u)" != 0 ] ; then 
 	echo "You need to be root for this script.";
 	exit 1
@@ -10,29 +10,33 @@ fi
 
 source ./reportfunctions.sh
 
-###################################################################################################
 
-#Heading and command for system’s fully-qualified domain name
+#####-------------------END OF ROOT PRIVILAGE MESSAGE-----------------------#####
+
+
+
+
+#####--------------DISPLAY GENERAL PROPERTIES-----------------#####
+
+
+
+#Command for system’s fully-qualified domain name. Assign a variable to print it.
 FQDN=$(hostname -f)
 
-#Heading and command for the  IP addresses
-IP_Address=$(hostname -I)
+#Command to find the total space available in the system.
+Availablespace=$(df / -h | awk 'FNR == 2 {print $4}')
 
-#Heading and command for amount of space available
-Space_Available=$(df / -h | awk 'FNR == 2 {print $4}')
+#Command for the  IP addresses of the system.
+Ipaddress=$(hostname -I)
 
-##############################  error message to the user on stderr #################################
 
-log_errors() {
-    somecommand 2> >(logger -t "$(basename "$0")" -i -p user.warning)
-}
 
-# usage
-log_errors
+#####----------------END OF DISPLAY GENERAL PROPERTIES----------------#####
 
-############################# error message with a timestamp #######################################
 
-#
+#####----------------ERROR MESSAGE WITH A TIMESTAMP------------------#####
+
+#Assigning the variables
 verbose=false
 systemReport=false
 diskReport=false
@@ -75,11 +79,13 @@ fi
 #system runs only the computerreport, osreport, cpureport, ramreport, and videoreport
 if [[ "$systemReport" == true ]]; then 
 	fullReport=false
+	computerreport
 	cpureport
+	osreport
+	videoreport
 	ramreport
 	videoreport
-	computerreport
-	osreport
+	
 fi
 
 #disk runs only the diskreport	
@@ -106,6 +112,18 @@ if [[ "$fullReport" == true ]]; then
 	osreport
 	networkreport
 fi	
+	
+#####--------------DISPLAY ERROR MESSAGE TO THE USER ON STDERR-----------------#####
+
+#Construct a function
+Errorsstderr() {
+    somecommand 2> >(logger -t "$(basename "$0")" -i -p user.warning)
+}
+
+#Calling the function
+Errorsstedrr
+#####--------------END OF DISPLAY ERROR MESSAGE TO THE USER ON STDERR-----------------#####
+
 	
 
 
