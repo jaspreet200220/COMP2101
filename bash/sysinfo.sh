@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 ######-------------ROOT PRIVILAGE MESSAGE------------------########
 
@@ -37,6 +37,7 @@ Ipaddress=$(hostname -I)
 #####----------------ERROR MESSAGE WITH A TIMESTAMP------------------#####
 
 #Assigning the variables
+
 verbose=false
 systemReport=false
 diskReport=false
@@ -72,57 +73,65 @@ while [ $# -gt 0 ]; do
 	shift
 done
 #-v runs your script verbosely, showing any errors to the user instead of sending them to the logfile
+
 if [[ "$verbose" == true ]]; then
 	fullReport=false
-	errormessage
-fi
-#system runs only the computerreport, osreport, cpureport, ramreport, and videoreport
-if [[ "$systemReport" == true ]]; then 
-	fullReport=false
-	computerreport
-	cpureport
-	osreport
-	videoreport
-	ramreport
-	videoreport
-	
+	errorMessage
 fi
 
-#disk runs only the diskreport	
-if [[ "$diskReport" == true ]]; then
-	fullReport=false
-	diskreport
-fi
 
-#network runs only the networkreport
+#network runs networkreport
 if [[ "$networkReport" == true ]]; then
 	fullReport=false
 	networkreport
 	
 fi
 
+
+
+#disk runs only the diskreport	
+if [[ "$diskReport" == true ]]; then
+	fullReport=false
+	
+	diskreport
+fi
+
+#system runs only the computerreport, osreport, cpureport, ramreport, and videoreport
+if [[ "$systemReport" == true ]]; then 
+	fullReport=false
+	computerreport
+	
+	cpureport
+	
+	osreport
+	
+	videoreport
+	
+	ramreport
+	
+	videoreport
+	
+fi
+
+
 #Print the full report
 if [[ "$fullReport" == true ]]; then
 	fullReport=false
-	diskreport
-	cpureport
-	ramreport
-	videoreport
-	computerreport
-	osreport
-	networkreport
-fi	
 	
-#####--------------DISPLAY ERROR MESSAGE TO THE USER ON STDERR-----------------#####
-
-#Construct a function
-Errorsstderr() {
-    somecommand 2> >(logger -t "$(basename "$0")" -i -p user.warning)
-}
-
-#Calling the function
-Errorsstedrr
-#####--------------END OF DISPLAY ERROR MESSAGE TO THE USER ON STDERR-----------------#####
+	diskreport
+	
+	cpureport
+	
+	ramreport
+	
+	videoreport
+	
+	computerreport
+	
+	osreport
+	
+	networkreport
+fi
 
 	
 
